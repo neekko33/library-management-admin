@@ -1,0 +1,29 @@
+{
+  "name": "jmh-invest-admin",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^1.1.4",
+    "axios": "^0.26.1",
+    "echarts": "^5.3.1",
+    "element-plus": "^2.1.5",
+    "js-cookie": "^3.0.1",
+    "lodash": "^4.17.21",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.0.12",
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.14"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.2.0",
+    "prettier": "^2.6.2",
+    "unplugin-auto-import": "^0.6.6",
+    "unplugin-vue-components": "^0.18.4",
+    "vite": "^2.8.0"
+  }
+}

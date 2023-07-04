@@ -1,0 +1,50 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.red {
+    color: #ff2a2a;
+}
+
+.blue {
+    color: #4243d2;
+}
+
+.green {
+    color: #458747;
+}
+
+.table_header {
+    height: 55px;
+}
+
+.el-table .cell {
+    white-space: pre-line !important;
+}
+
+.view_container .table {
+    overflow: auto;
+    height: calc(100% - 54px);
+}
+
+.el-drawer__body .chart {
+    height: 31vh !important;
+}
+
+.el-drawer__body .chart #main {
+    height: 265px !important;
+}
+
