@@ -1,52 +1,33 @@
 <script setup>
-import {getBookData} from "../../../api";
+import {getCategoryData} from "../../../api";
 import {reactive} from "vue";
 import Table from "../../../components/table.vue";
 
 const state = reactive({
   tableLabel: [
     {
-      label: '图书ID',
-      key: 'BookID'
+      label: '分类ID',
+      key: 'CategoryID'
     },
     {
-      label: '标题',
-      key: 'Title'
+      label: '分类名称',
+      key: 'CategoryName'
     },
     {
-      label: '作者',
-      key: 'Author'
-    },
-    {
-      label: '出版社',
-      key: 'PublishingHouse'
-    },
-    {
-      label: 'ISBN',
-      key: 'ISBN'
-    },
-    {
-      label: '分类标识',
-      key: 'Category'
-    },
-    {
-      label: '在馆状态',
-      key: 'AvailabilityStatus'
-    },
-    {
-      label: '馆藏地址',
-      key: 'Location'
+      label: '分类字符（中图法）',
+      key: 'CategoryChar'
     },
   ],
   tableData: null,
   total: 0,
   page: 1,
+  pageSize: 13,
   loading: true
 })
 
 const getTableData = async () => {
   state.loading = true
-  const {total, page, data} = await getBookData({page: state.page})
+  const {total, page, data} = await getCategoryData({page: state.page})
   state.total = total
   state.page = page
   state.tableData = data

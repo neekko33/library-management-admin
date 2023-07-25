@@ -4,7 +4,7 @@ import router from '../router/index'
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: 'http://192.168.16.105:8000/api/v2/ty/', //本地服务器
+  baseURL: 'http://localhost:7001/api', //本地服务器
 })
 
 // request拦截器

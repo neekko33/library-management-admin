@@ -9,14 +9,14 @@ export const constantRoutes = [
   {
     path: "/",
     component: () => import("../views/layout/index.vue"),
-    redirect: "/dashboard",
+    redirect: "/info/book",
     children: [
-      {
-        path: "dashboard",
-        component: () => import("../views/dashboard/index.vue"),
-        name: "Dashboard",
-        meta: { title: "首页" },
-      },
+      // {
+      //   path: "dashboard",
+      //   component: () => import("../views/dashboard/index.vue"),
+      //   name: "Dashboard",
+      //   meta: { title: "首页" },
+      // },
       {
         path: "info",
         component: () => import("../views/info/index.vue"),

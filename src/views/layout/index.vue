@@ -5,7 +5,6 @@ import Info from "../info/index.vue";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "../../store";
-import { getQuarter } from "../../api";
 
 const fatherTitle = ref("");
 const pageTitle = ref("");
