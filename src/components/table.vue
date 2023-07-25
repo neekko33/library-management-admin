@@ -1,6 +1,7 @@
 <script setup>
-import {reactive, onMounted} from "vue";
-import {useRouter} from "vue-router";
+import {reactive, onMounted} from 'vue'
+import {useRouter} from 'vue-router'
+import moment from 'moment'
 
 const emit = defineEmits(['pageChange'])
 const props = defineProps({
@@ -9,15 +10,20 @@ const props = defineProps({
   total: Number,
   page: Number,
   loading: Boolean,
-});
+})
 
 const state = reactive({
-  tableHeight: "669",
+  tableHeight: '669',
   title: useRouter().currentRoute.value.meta.title,
-});
+})
 
 const handlePageChange = (page) => {
   emit('pageChange', page)
+}
+
+const formatDate = (date) => {
+
+  return date ? moment(date).format('YYYY-MM-D') : '--'
 }
 
 // 打开机构或股票详情页
@@ -52,7 +58,23 @@ const handlePageChange = (page) => {
         style="width: 100%"
     >
       <template v-for="(item, index) in props.tableLabel" :key="index">
-        <el-table-column :fixed="index === 0" min-width="180" :label="item.label" :prop="item.key"></el-table-column>
+        <template v-if="item.isDate">
+          <el-table-column min-width="180" :label="item.label">
+            <template #default="scope">
+              {{ formatDate(scope.row[item.key]) }}
+            </template>
+          </el-table-column>
+        </template>
+        <template v-else-if="item.isBool">
+          <el-table-column min-width="180" :label="item.label">
+            <template #default="scope">
+              {{ scope.row[item.key] ? '是' : '否' }}
+            </template>
+          </el-table-column>
+        </template>
+        <template v-else>
+          <el-table-column :fixed="index === 0" min-width="180" :label="item.label" :prop="item.key"></el-table-column>
+        </template>
       </template>
       <el-table-column label="操作">
         <template #default="scope">
