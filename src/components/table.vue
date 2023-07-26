@@ -1,62 +1,66 @@
 <script setup>
-import {reactive, onMounted} from 'vue'
-import {useRouter} from 'vue-router'
+import { reactive, onMounted } from 'vue'
+import { Search } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
+import { useStore } from '../store'
 import moment from 'moment'
 
-const emit = defineEmits(['pageChange'])
+const emit = defineEmits(['pageChange', 'search'])
 const props = defineProps({
   tableLabel: Array,
   tableData: Array,
   total: Number,
   page: Number,
   loading: Boolean,
+  placeholder: String
 })
 
+const store = useStore()
 const state = reactive({
   tableHeight: '669',
   title: useRouter().currentRoute.value.meta.title,
+  search: ''
 })
 
 const handlePageChange = (page) => {
-  emit('pageChange', page)
+
+  emit('pageChange', page, state.search)
+}
+
+const handleSearch = () => {
+  if (state.search.trim() == '') {
+    handlePageChange(1)
+  }
+  emit('search', state.search)
 }
 
 const formatDate = (date) => {
-
   return date ? moment(date).format('YYYY-MM-D') : '--'
 }
 
-// 打开机构或股票详情页
-// const handleClickName = (item, type) => {
-//   if (!item.inst_id && !item.stock_id) return;
-//   store.setDrawerType(type);
-//   store.setDrawerId(type === "inst" ? item.inst_id : item.stock_id);
-//   if (!store.showInfo) {
-//     store.changeShowInfo(true);
-//   } else {
-//     if (props.type === "base_list") {
-//       // store.refreshDrawer();
-//       emit("refresh", true);
-//     }
-//   }
-// };
+const addNewData = () => {
+  store.showInfo = true
+}
 
 // click pagination button.
 </script>
 <template>
   <div class="top">
-    <div class="title">{{ state.title }}管理</div>
+    <div style="display: flex;">
+      <div class="title">{{ state.title }}管理</div>
+      <div style="width: 500px;">
+        <el-input v-model="state.search" clearable :placeholder="props.placeholder" @change="handleSearch">
+          <template #append>
+            <el-button :icon="Search" @click="handleSearch" />
+          </template>
+        </el-input>
+      </div>
+    </div>
+    <el-button type="primary" size="large" @click="addNewData">＋新增数据</el-button>
   </div>
   <div class="table">
-    <el-table
-        v-loading="props.loading"
-        :data="props.tableData"
-        header-row-class-name="table_header"
-        stripe
-        border
-        table-layout="auto"
-        style="width: 100%"
-    >
+    <el-table v-loading="props.loading" :data="props.tableData" header-row-class-name="table_header" stripe border
+      table-layout="auto" style="width: 100%">
       <template v-for="(item, index) in props.tableLabel" :key="index">
         <template v-if="item.isDate">
           <el-table-column min-width="180" :label="item.label">
@@ -84,15 +88,8 @@ const formatDate = (date) => {
       </el-table-column>
     </el-table>
     <div class="pagination">
-      <el-pagination
-          background
-          layout="prev, pager, next"
-          :current-page="props.page"
-          @current-change="handlePageChange"
-          :page-size="13"
-          :total="props.total"
-          hide-on-single-page
-      />
+      <el-pagination background layout="prev, pager, next" :current-page="props.page" @current-change="handlePageChange"
+        :page-size="13" :total="props.total" hide-on-single-page />
     </div>
   </div>
 </template>
@@ -108,6 +105,10 @@ const formatDate = (date) => {
 .top {
   display: flex;
   justify-content: space-between;
+}
+
+.top .title {
+  margin-right: 30px;
 }
 
 .table {

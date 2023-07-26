@@ -1,6 +1,6 @@
 <script setup>
-import {getBookData} from "../../../api";
-import {reactive} from "vue";
+import { getBookData, searchBook } from "../../../api";
+import { reactive } from "vue";
 import Table from "../../../components/table.vue";
 
 const state = reactive({
@@ -41,27 +41,41 @@ const state = reactive({
   tableData: null,
   total: 0,
   page: 1,
-  loading: true
+  loading: true,
+  placeholder: '请输入图书名称、作者或ISBN'
 })
 
 const getTableData = async () => {
   state.loading = true
-  const {total, page, data} = await getBookData({page: state.page})
+  const { total, page, data } = await getBookData({ page: state.page })
   state.total = total
   state.page = page
   state.tableData = data
   state.loading = false
 }
 
-const handlePageChange = (page) => {
+const handleSearch = async (search) => {
+  state.loading = true
+  const { total, page, data } = await searchBook({ page: state.page, search })
+  state.total = total
   state.page = page
-  getTableData()
+  state.tableData = data
+  state.loading = false
+}
+
+const handlePageChange = (page, search) => {
+  state.page = page
+  if (search.trim() === '') {
+    getTableData()
+  } else {
+    handleSearch(search)
+  }
 }
 
 getTableData()
 
 </script>
 <template>
-  <Table :table-label="state.tableLabel" :table-data="state.tableData" :total="state.total"
-         :page="state.page" :loading="state.loading" @page-change="handlePageChange"/>
+  <Table :table-label="state.tableLabel" :table-data="state.tableData" :total="state.total" :page="state.page"
+    :placeholder="state.placeholder" :loading="state.loading" @page-change="handlePageChange" @search="handleSearch" />
 </template>

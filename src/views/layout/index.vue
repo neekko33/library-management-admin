@@ -1,7 +1,7 @@
 <script setup>
 import SideBar from "./components/sideBar.vue";
 import NavBar from "./components/navBar.vue";
-import Info from "../info/index.vue";
+import Form from '../../components/form.vue'
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "../../store";
@@ -12,10 +12,7 @@ const activeRoute = ref("");
 const router = useRouter();
 const store = useStore();
 const showDrawer = ref(false);
-// 查看股票行情
-const checkQuotation = () => {
-  window.open(`https://quote.eastmoney.com/${store.drawerId}.html`);
-};
+
 watch(
   () => router.currentRoute.value.path,
   (newValue, oldValue) => {
@@ -33,6 +30,7 @@ watch(
   },
   { immediate: true }
 );
+
 </script>
 <template>
   <el-header height="50px">
@@ -61,15 +59,9 @@ watch(
   </el-container>
   <template v-if="showDrawer">
     <el-drawer v-model="store.showInfo" direction="rtl">
-      <template #title
-        ><div class="drawer-header">
-          <span>{{ store.drawerTitle }}</span>
-          <span v-if="store.showLink" @click="checkQuotation"
-            >查看该股票行情</span
-          >
-        </div></template
-      >
-      <Info v-if="store.showInfo" />
+      <div class="form">
+        <Form />
+      </div>
     </el-drawer>
   </template>
 </template>
@@ -119,7 +111,7 @@ watch(
 }
 
 .el-drawer {
-  width: 88vw !important;
+  width: 40vw !important;
   background-color: #f1f1f1;
 }
 
@@ -131,7 +123,7 @@ watch(
   padding-top: 0;
 }
 
-.el-drawer .el-drawer__header > :first-child {
+.el-drawer .el-drawer__header> :first-child {
   font-size: 22px;
   font-weight: bold;
   color: #2c3e50;
@@ -150,5 +142,13 @@ watch(
   cursor: pointer;
   color: #1890ff;
   text-decoration: underline;
+}
+
+.form {
+  padding-bottom: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #e4e7ed;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
 }
 </style>
