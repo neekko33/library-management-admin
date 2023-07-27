@@ -21,30 +21,6 @@ export const login = userInfo => {
 	})
 }
 
-// 获取图书信息
-export const getBookData = data => {
-	return api({
-		url: '/books?' + transformData(data),
-		method: 'GET',
-	})
-}
-
-// 搜索图书
-export const searchBook = data => {
-	return api({
-		url: '/books/search?' + transformData(data),
-		method: 'GET',
-	})
-}
-
-// 获取分类信息
-export const getCategoryData = data => {
-	return api({
-		url: '/categories?' + transformData(data),
-		method: 'GET',
-	})
-}
-
 // 获取读者信息
 export const getReaderData = data => {
 	return api({

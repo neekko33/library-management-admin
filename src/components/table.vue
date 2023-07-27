@@ -2,10 +2,9 @@
 import { reactive, onMounted } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
-import { useStore } from '../store'
 import moment from 'moment'
 
-const emit = defineEmits(['pageChange', 'search'])
+const emit = defineEmits(['pageChange', 'search', 'add', 'edit', 'delete'])
 const props = defineProps({
   tableLabel: Array,
   tableData: Array,
@@ -14,34 +13,32 @@ const props = defineProps({
   loading: Boolean,
   placeholder: String
 })
-
-const store = useStore()
 const state = reactive({
   tableHeight: '669',
   title: useRouter().currentRoute.value.meta.title,
   search: ''
 })
-
 const handlePageChange = (page) => {
-
   emit('pageChange', page, state.search)
 }
-
 const handleSearch = () => {
   if (state.search.trim() == '') {
     handlePageChange(1)
   }
   emit('search', state.search)
 }
-
 const formatDate = (date) => {
   return date ? moment(date).format('YYYY-MM-D') : '--'
 }
-
 const addNewData = () => {
-  store.showInfo = true
+  emit('add')
 }
-
+const handleEdit = (bookId) => {
+  emit('edit', bookId)
+}
+const handleDelete = (bookId) => {
+  emit('delete', bookId)
+}
 // click pagination button.
 </script>
 <template>
@@ -82,8 +79,13 @@ const addNewData = () => {
       </template>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button size="small">编辑</el-button>
-          <el-button size="small" type="danger">删除</el-button>
+          <el-button size="small" @click="handleEdit(scope.row.BookID)">编辑</el-button>
+          <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="是否确认删除?"
+            @confirm="handleDelete(scope.row.BookID)">
+            <template #reference>
+              <el-button size="small" type="danger">删除</el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>

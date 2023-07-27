@@ -28,4 +28,8 @@ import { useRouter } from "vue-router";
   width: 100%;
   height: 100%;
 }
+
+.el-dialog {
+  margin-top: 10vh !important;
+}
 </style>
