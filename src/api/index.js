@@ -21,14 +21,6 @@ export const login = userInfo => {
 	})
 }
 
-// 获取读者信息
-export const getReaderData = data => {
-	return api({
-		url: '/readers?' + transformData(data),
-		method: 'GET',
-	})
-}
-
 // 获取通知信息
 export const getNoticeData = data => {
 	return api({

@@ -118,7 +118,8 @@ const state = reactive({
   loading: true,
   placeholder: '请输入图书名称、作者或ISBN',
   showDialog: false,
-  dialogId: 0
+  dialogId: 0,
+  idName: 'BookID'
 })
 const getTableData = async () => {
   state.loading = true
@@ -173,6 +174,7 @@ const resetFormData = () => {
 }
 
 const handleAddData = async () => {
+  resetFormData()
   state.dialogId = 0
   state.showDialog = true
 }
@@ -229,8 +231,8 @@ getCategoryData()
 </script>
 <template>
   <Table :table-label="state.tableLabel" :table-data="state.tableData" :total="state.total" :page="state.page"
-    :placeholder="state.placeholder" :loading="state.loading" @page-change="handlePageChange" @search="handleSearch"
-    @add="handleAddData" @edit="handleEdit" @delete="handleDelete" />
+    :placeholder="state.placeholder" :loading="state.loading" :id-name="state.idName" @page-change="handlePageChange"
+    @search="handleSearch" @add="handleAddData" @edit="handleEdit" @delete="handleDelete" />
   <el-dialog v-model="state.showDialog" title="图书详情">
     <Form :form-data="state.formData" :form-label="state.formLabel" @submit="handleSubmit" />
   </el-dialog>

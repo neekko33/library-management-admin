@@ -11,7 +11,8 @@ const props = defineProps({
   total: Number,
   page: Number,
   loading: Boolean,
-  placeholder: String
+  placeholder: String,
+  idName: String
 })
 const state = reactive({
   tableHeight: '669',
@@ -33,11 +34,11 @@ const formatDate = (date) => {
 const addNewData = () => {
   emit('add')
 }
-const handleEdit = (bookId) => {
-  emit('edit', bookId)
+const handleEdit = (id) => {
+  emit('edit', id)
 }
-const handleDelete = (bookId) => {
-  emit('delete', bookId)
+const handleDelete = (id) => {
+  emit('delete', id)
 }
 // click pagination button.
 </script>
@@ -45,7 +46,7 @@ const handleDelete = (bookId) => {
   <div class="top">
     <div style="display: flex;">
       <div class="title">{{ state.title }}管理</div>
-      <div style="width: 500px;">
+      <div style="width: 500px;" v-if="props.placeholder">
         <el-input v-model="state.search" clearable :placeholder="props.placeholder" @change="handleSearch">
           <template #append>
             <el-button :icon="Search" @click="handleSearch" />
@@ -79,9 +80,9 @@ const handleDelete = (bookId) => {
       </template>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button size="small" @click="handleEdit(scope.row.BookID)">编辑</el-button>
+          <el-button size="small" @click="handleEdit(scope.row[props.idName])">编辑</el-button>
           <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="是否确认删除?"
-            @confirm="handleDelete(scope.row.BookID)">
+            @confirm="handleDelete(scope.row[props.idName])">
             <template #reference>
               <el-button size="small" type="danger">删除</el-button>
             </template>
