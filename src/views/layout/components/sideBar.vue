@@ -7,33 +7,20 @@
       <expand />
     </el-icon>
   </div>
-  <el-menu
-    :uniqueOpened="true"
-    :collapse="isCollapse"
-    :default-active="props.activeRoute"
-    @select="handleSelect"
-    class="el-menu-vertical-demo"
-    text-color="#fff"
-    active-text-color="#fff"
-    background-color="#495060"
-  >
+  <el-menu :uniqueOpened="true" :collapse="isCollapse" :default-active="props.activeRoute" @select="handleSelect"
+    class="el-menu-vertical-demo" text-color="#fff" active-text-color="#fff" background-color="#495060">
     <template v-for="(item, index) in routes" :key="index">
-      <el-sub-menu
-        :index="item.path"
-        v-if="item.children && item.children.length > 0"
-      >
+      <el-sub-menu :index="item.path" v-if="item.children && item.children.length > 0">
         <template #title>
           <el-icon>
             <document-copy />
           </el-icon>
           <span>{{ item.meta.title }}</span>
         </template>
-        <el-menu-item
-          v-for="(child, idx) in item.children"
-          :key="idx"
-          :index="`/${item.path}/${child.path}`"
-          >{{ child.meta.title }}</el-menu-item
-        >
+        <template v-for="(child, idx) in item.children" :key="idx">
+          <el-menu-item v-if="!child.meta.hide" :index="`/${item.path}/${child.path}`">{{ child.meta.title
+          }}</el-menu-item>
+        </template>
       </el-sub-menu>
       <el-menu-item v-else :index="`/${item.path}`">
         <el-icon v-if="index == 0">

@@ -19,6 +19,11 @@ const submit = () => {
           <el-option v-for="(itm, idx) in item.options" :key="idx" :label="itm.CategoryName" :value="itm.CategoryID" />
         </el-select>
       </template>
+      <template v-if="item.isUserType">
+        <el-select v-model="props.formData[item.key]" placeholder="请选择用户类型">
+          <el-option v-for="(itm, idx) in item.options" :key="idx" :label="itm.userTypeName" :value="itm.userType" />
+        </el-select>
+      </template>
       <template v-if="item.isText">
         <el-input v-model="props.formData[item.key]" type="textarea" />
       </template>

@@ -74,6 +74,13 @@ const handleDelete = (id) => {
             </template>
           </el-table-column>
         </template>
+        <template v-else-if="item.isUserType">
+          <el-table-column min-width="180" :label="item.label">
+            <template #default="scope">
+              {{ scope.row[item.key] == 'admin' ? '系统管理员' : '系统用户' }}
+            </template>
+          </el-table-column>
+        </template>
         <template v-else>
           <el-table-column :fixed="index === 0" min-width="180" :label="item.label" :prop="item.key"></el-table-column>
         </template>

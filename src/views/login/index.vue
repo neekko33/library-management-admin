@@ -9,48 +9,24 @@
         <div class="title">系统后台登陆</div>
         <el-input v-model="user.account" placeholder="请输入用户名">
           <template #prefix>
-            <svg
-                width="20"
-                height="20"
-                viewBox="0 0 1024 1024"
-                xmlns="http://www.w3.org/2000/svg"
-                data-v-ba633cb8
-            >
-              <path
-                  fill="currentColor"
-                  d="M512 512a192 192 0 1 0 0-384 192 192 0 0 0 0 384zm0 64a256 256 0 1 1 0-512 256 256 0 0 1 0 512zm320 320v-96a96 96 0 0 0-96-96H288a96 96 0 0 0-96 96v96a32 32 0 1 1-64 0v-96a160 160 0 0 1 160-160h448a160 160 0 0 1 160 160v96a32 32 0 1 1-64 0z"
-              />
+            <svg width="20" height="20" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-ba633cb8>
+              <path fill="currentColor"
+                d="M512 512a192 192 0 1 0 0-384 192 192 0 0 0 0 384zm0 64a256 256 0 1 1 0-512 256 256 0 0 1 0 512zm320 320v-96a96 96 0 0 0-96-96H288a96 96 0 0 0-96 96v96a32 32 0 1 1-64 0v-96a160 160 0 0 1 160-160h448a160 160 0 0 1 160 160v96a32 32 0 1 1-64 0z" />
             </svg>
           </template>
         </el-input>
-        <el-input
-            v-model="user.password"
-            placeholder="请输入密码"
-            show-password
-        >
+        <el-input v-model="user.password" placeholder="请输入密码" show-password>
           <template #prefix>
-            <svg
-                width="20"
-                height="20"
-                viewBox="0 0 1024 1024"
-                xmlns="http://www.w3.org/2000/svg"
-                data-v-ba633cb8
-            >
-              <path
-                  fill="currentColor"
-                  d="M224 448a32 32 0 0 0-32 32v384a32 32 0 0 0 32 32h576a32 32 0 0 0 32-32V480a32 32 0 0 0-32-32H224zm0-64h576a96 96 0 0 1 96 96v384a96 96 0 0 1-96 96H224a96 96 0 0 1-96-96V480a96 96 0 0 1 96-96z"
-              />
-              <path
-                  fill="currentColor"
-                  d="M512 544a32 32 0 0 1 32 32v192a32 32 0 1 1-64 0V576a32 32 0 0 1 32-32zm192-160v-64a192 192 0 1 0-384 0v64h384zM512 64a256 256 0 0 1 256 256v128H256V320A256 256 0 0 1 512 64z"
-              />
+            <svg width="20" height="20" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-ba633cb8>
+              <path fill="currentColor"
+                d="M224 448a32 32 0 0 0-32 32v384a32 32 0 0 0 32 32h576a32 32 0 0 0 32-32V480a32 32 0 0 0-32-32H224zm0-64h576a96 96 0 0 1 96 96v384a96 96 0 0 1-96 96H224a96 96 0 0 1-96-96V480a96 96 0 0 1 96-96z" />
+              <path fill="currentColor"
+                d="M512 544a32 32 0 0 1 32 32v192a32 32 0 1 1-64 0V576a32 32 0 0 1 32-32zm192-160v-64a192 192 0 1 0-384 0v64h384zM512 64a256 256 0 0 1 256 256v128H256V320A256 256 0 0 1 512 64z" />
             </svg>
           </template>
         </el-input>
-        <el-button type="primary" @click="handleClick"
-        >立&nbsp;即&nbsp;登&nbsp;录
-        </el-button
-        >
+        <el-button type="primary" @click="handleClick">立&nbsp;即&nbsp;登&nbsp;录
+        </el-button>
       </div>
     </div>
     <div class="footer">
@@ -60,17 +36,19 @@
   </div>
 </template>
 <script setup>
-import {reactive} from "vue";
+import { reactive } from "vue";
 import "element-plus/es/components/message/style/css";
-import {ElMessage} from "element-plus";
-import {useRouter} from "vue-router";
-import {setToken} from "../../utils/auth";
-import {login} from "../../api";
+import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
+import { setToken } from "../../utils/auth";
+import { useStore } from '../../store'
+import { login } from "../../api/users";
 
 const user = reactive({
   account: "",
   password: "",
 });
+const store = useStore()
 const router = useRouter();
 const handleClick = async () => {
   // 非空判断
@@ -87,9 +65,9 @@ const handleClick = async () => {
     username, userType, userId, msg,
   } = await login(user);
   // setToken(token);
-  localStorage.setItem("username", username);
-  localStorage.setItem("userType", userType);
-  localStorage.setItem("userId", userId);
+  store.setUserType(userType)
+  store.setUsername(username)
+  store.setUserId(userId)
   ElMessage({
     showClose: true,
     message: msg,

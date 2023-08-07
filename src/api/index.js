@@ -9,18 +9,6 @@ function transformData(data) {
 	return str.substring(0, str.length - 1)
 }
 
-// 登录
-export const login = userInfo => {
-	return api({
-		url: '/users/login',
-		method: 'POST',
-		data: {
-			username: userInfo.account,
-			password: userInfo.password,
-		},
-	})
-}
-
 // 获取通知信息
 export const getNoticeData = data => {
 	return api({
@@ -41,14 +29,6 @@ export const getBorrowData = data => {
 export const getFineData = data => {
 	return api({
 		url: '/fines?' + transformData(data),
-		method: 'GET',
-	})
-}
-
-// 获取用户信息
-export const getUserData = data => {
-	return api({
-		url: '/users?' + transformData(data),
 		method: 'GET',
 	})
 }

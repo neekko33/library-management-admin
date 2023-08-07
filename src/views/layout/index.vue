@@ -110,10 +110,10 @@ watch(
   background-color: #f1f1f1;
 }
 
-.el-drawer {
+/* .el-drawer {
   width: 40vw !important;
   background-color: #f1f1f1;
-}
+} */
 
 .el-drawer .el-drawer__header {
   margin-bottom: 20px;

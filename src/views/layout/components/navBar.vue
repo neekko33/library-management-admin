@@ -6,28 +6,17 @@
     </div>
     <div class="dropdown">
       <el-dropdown trigger="click" @command="handleCommand">
-        <span
-          class="el-dropdown-link"
-          style="color: #ffffff; font-size: 16px; padding-right: 25px"
-        >
+        <span class="el-dropdown-link" style="color: #ffffff; font-size: 16px; padding-right: 25px">
           {{ username }}
-          <svg
-            height="20"
-            width="20"
-            viewBox="0 0 1024 1024"
-            xmlns="http://www.w3.org/2000/svg"
-            style="
+          <svg height="20" width="20" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" style="
               position: absolute;
               top: 50%;
               right: 0px;
               transform: translateY(-50%);
-            "
-            data-v-ba633cb8=""
-          >
-            <path
-              fill="currentColor"
-              d="M831.872 340.864 512 652.672 192.128 340.864a30.592 30.592 0 0 0-42.752 0 29.12 29.12 0 0 0 0 41.6L489.664 714.24a32 32 0 0 0 44.672 0l340.288-331.712a29.12 29.12 0 0 0 0-41.728 30.592 30.592 0 0 0-42.752 0z"
-            ></path>
+            " data-v-ba633cb8="">
+            <path fill="currentColor"
+              d="M831.872 340.864 512 652.672 192.128 340.864a30.592 30.592 0 0 0-42.752 0 29.12 29.12 0 0 0 0 41.6L489.664 714.24a32 32 0 0 0 44.672 0l340.288-331.712a29.12 29.12 0 0 0 0-41.728 30.592 30.592 0 0 0-42.752 0z">
+            </path>
           </svg>
         </span>
         <template #dropdown>
@@ -45,11 +34,13 @@ import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { removeToken } from "../../../utils/auth";
+import { useStore } from '../../../store'
 export default defineComponent({
   setup() {
     const router = useRouter();
     const username = ref("");
-    username.value = localStorage.getItem("username");
+    const store = useStore()
+    username.value = store.username;
     const handleCommand = (command) => {
       // 退出登录
       if (command === "logout") {
