@@ -12,7 +12,8 @@ const props = defineProps({
   page: Number,
   loading: Boolean,
   placeholder: String,
-  idName: String
+  idName: String,
+  isBorrow: Boolean
 })
 const state = reactive({
   tableHeight: '669',
@@ -85,7 +86,23 @@ const handleDelete = (id) => {
           <el-table-column :fixed="index === 0" min-width="180" :label="item.label" :prop="item.key"></el-table-column>
         </template>
       </template>
-      <el-table-column label="操作">
+      <el-table-column v-if="props.isBorrow" label="操作">
+        <template #default="scope">
+          <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="是否确认续借?"
+            @confirm="handleDelete(scope.row[props.idName])">
+            <template #reference>
+              <el-button size="small" type="default">续借</el-button>
+            </template>
+          </el-popconfirm>
+          <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="是否确认归还?"
+            @confirm="handleDelete(scope.row[props.idName])">
+            <template #reference>
+              <el-button size="small" type="success">归还</el-button>
+            </template>
+          </el-popconfirm>
+        </template>
+      </el-table-column>
+      <el-table-column v-else label="操作">
         <template #default="scope">
           <el-button size="small" @click="handleEdit(scope.row[props.idName])">编辑</el-button>
           <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="是否确认删除?"

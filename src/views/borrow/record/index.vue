@@ -1,7 +1,9 @@
 <script setup>
-import {getBorrowData} from '../../../api'
-import {reactive} from 'vue'
+import { getBorrowData } from '../../../api'
+import { reactive } from 'vue'
 import Table from '../../../components/table.vue'
+import Form from "../../../components/form.vue"
+import { ElMessage } from "element-plus";
 
 const state = reactive({
   tableLabel: [
@@ -27,6 +29,11 @@ const state = reactive({
       isDate: true
     },
     {
+      label: '截止时间',
+      key: 'DueDate',
+      isDate: true
+    },
+    {
       label: '归还时间',
       key: 'ReturnDate',
       isDate: true
@@ -38,6 +45,18 @@ const state = reactive({
     },
   ],
   tableData: null,
+  formLabel: [
+    {
+      label: '读者ID',
+      key: 'readerId',
+      isInput: true
+    },
+    {
+      label: '图书ID',
+      key: 'bookId',
+      isInput: true
+    }
+  ],
   total: 0,
   page: 1,
   loading: true
@@ -45,7 +64,7 @@ const state = reactive({
 
 const getTableData = async () => {
   state.loading = true
-  const {total, page, data} = await getBorrowData({page: state.page})
+  const { total, page, data } = await getBorrowData({ page: state.page })
   state.total = total
   state.page = page
   state.tableData = data
@@ -61,6 +80,6 @@ getTableData()
 
 </script>
 <template>
-  <Table :table-label="state.tableLabel" :table-data="state.tableData" :total="state.total"
-         :page="state.page" :loading="state.loading" @page-change="handlePageChange"/>
+  <Table :table-label="state.tableLabel" :table-data="state.tableData" :total="state.total" :page="state.page"
+    :loading="state.loading" @page-change="handlePageChange" :is-borrow="true" />
 </template>
