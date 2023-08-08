@@ -47,18 +47,18 @@ export const constantRoutes = [
 			},
 			{
 				path: 'checkout',
-				component: () => import('../views/checkout/index.vue'),
+				component: () => import('../views/borrow/index.vue'),
 				name: 'Checkout',
 				meta: { title: '借阅管理' },
 				children: [
 					{
 						path: 'record',
-						component: () => import('../views/checkout/record/index.vue'),
+						component: () => import('../views/borrow/record/index.vue'),
 						meta: { title: '借阅记录' },
 					},
 					{
 						path: 'compensation',
-						component: () => import('../views/checkout/compensation/index.vue'),
+						component: () => import('../views/borrow/fine/index.vue'),
 						meta: { title: '图书赔失' },
 					},
 				],

@@ -25,13 +25,13 @@
             </svg>
           </template>
         </el-input>
-        <el-button type="primary" @click="handleClick">立&nbsp;即&nbsp;登&nbsp;录
+        <el-button type="primary" size="large" @click="handleClick">立&nbsp;即&nbsp;登&nbsp;录
         </el-button>
       </div>
     </div>
     <div class="footer">
-      <div class="link">蜀ICP备17006376号</div>
-      <div class="copy_right">Copyright © 2017-2018</div>
+      <div class="link">蜀ICP备XXXXXXXX号</div>
+      <div class="copy_right">Copyright © 2023-2024</div>
     </div>
   </div>
 </template>
