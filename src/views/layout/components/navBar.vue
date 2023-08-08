@@ -33,14 +33,12 @@
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-import { removeToken } from "../../../utils/auth";
-import { useStore } from '../../../store'
+import { getUserName, removeUserInfo } from "../../../utils/auth";
 export default defineComponent({
   setup() {
     const router = useRouter();
     const username = ref("");
-    const store = useStore()
-    username.value = store.username;
+    username.value = getUserName();
     const handleCommand = (command) => {
       // 退出登录
       if (command === "logout") {
@@ -49,7 +47,7 @@ export default defineComponent({
           message: "退出成功",
           type: "success",
         });
-        removeToken();
+        removeUserInfo();
         router.push("/login");
       }
     };

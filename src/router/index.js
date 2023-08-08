@@ -43,11 +43,6 @@ export const constantRoutes = [
 						component: () => import('../views/info/notice/index.vue'),
 						meta: { title: '通知信息' },
 					},
-					{
-						path: 'notice/edit',
-						component: () => import('../views/info/notice/edit.vue'),
-						meta: { title: '通知编辑', hide: true },
-					},
 				],
 			},
 			{

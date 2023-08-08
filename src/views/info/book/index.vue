@@ -25,6 +25,11 @@ const state = reactive({
       key: 'PublishingHouse'
     },
     {
+      label: '出版时间',
+      key: 'PublicationDate',
+      isDate: true
+    },
+    {
       label: 'ISBN',
       key: 'ISBN'
     },

@@ -40,7 +40,7 @@ import { reactive } from "vue";
 import "element-plus/es/components/message/style/css";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
-import { setToken } from "../../utils/auth";
+import { setToken, setUserInfo } from "../../utils/auth";
 import { useStore } from '../../store'
 import { login } from "../../api/users";
 
@@ -65,9 +65,7 @@ const handleClick = async () => {
     username, userType, userId, msg,
   } = await login(user);
   // setToken(token);
-  store.setUserType(userType)
-  store.setUsername(username)
-  store.setUserId(userId)
+  setUserInfo(userId, username, userType)
   ElMessage({
     showClose: true,
     message: msg,

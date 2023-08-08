@@ -1,16 +1,15 @@
 <script setup>
 import SideBar from "./components/sideBar.vue";
 import NavBar from "./components/navBar.vue";
-import Form from '../../components/form.vue'
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
-import { useStore } from "../../store";
+import { ElMessage } from "element-plus";
+import { getUserId } from "../../utils/auth";
 
 const fatherTitle = ref("");
 const pageTitle = ref("");
 const activeRoute = ref("");
 const router = useRouter();
-const store = useStore();
 const showDrawer = ref(false);
 
 watch(
@@ -30,6 +29,15 @@ watch(
   },
   { immediate: true }
 );
+
+if (!getUserId()) {
+  ElMessage({
+    showClose: true,
+    message: "登录失效,请重新登录",
+    type: "warning",
+  });
+  router.push("/login");
+}
 
 </script>
 <template>
@@ -57,13 +65,6 @@ watch(
       </div>
     </el-main>
   </el-container>
-  <template v-if="showDrawer">
-    <el-drawer v-model="store.showInfo" direction="rtl">
-      <div class="form">
-        <Form />
-      </div>
-    </el-drawer>
-  </template>
 </template>
 
 <style>
