@@ -9,14 +9,6 @@ function transformData(data) {
 	return str.substring(0, str.length - 1)
 }
 
-// 获取借阅记录
-export const getBorrowData = data => {
-	return api({
-		url: '/borrows?' + transformData(data),
-		method: 'GET',
-	})
-}
-
 // 获取罚款记录
 export const getFineData = data => {
 	return api({

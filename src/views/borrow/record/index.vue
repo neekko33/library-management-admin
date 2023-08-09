@@ -1,5 +1,5 @@
 <script setup>
-import { getBorrowData } from '../../../api'
+import { getBorrowData, searchBorrow, addBorrow, renewBrrow, deleteBorrow } from '../../../api/borrows'
 import { reactive } from 'vue'
 import Table from '../../../components/table.vue'
 import Form from "../../../components/form.vue"
@@ -57,9 +57,16 @@ const state = reactive({
       isInput: true
     }
   ],
+  formData: {
+    readerId: '',
+    bookId: ''
+  },
   total: 0,
   page: 1,
-  loading: true
+  loading: true,
+  placeholder: '请输入图书名称或读者名称',
+  showDialog: false,
+  idName: 'BorrowID'
 })
 
 const getTableData = async () => {
@@ -71,8 +78,61 @@ const getTableData = async () => {
   state.loading = false
 }
 
-const handlePageChange = (page) => {
+const handleSearch = async (search) => {
+  state.loading = true
+  const { total, page, data } = await searchBorrow({ page: state.page, search })
+  state.total = total
   state.page = page
+  state.tableData = data
+  state.loading = false
+}
+
+const handlePageChange = (page, search) => {
+  state.page = page
+  if (search.trim() === '') {
+    getTableData()
+  } else {
+    handleSearch(search)
+  }
+}
+
+const resetFormData = () => {
+  state.formData.bookId = ''
+  state.formData.readerId = ''
+}
+
+const handleAddData = async () => {
+  resetFormData()
+  state.showDialog = true
+}
+
+const handleSubmit = async () => {
+  const { msg } = await addBorrow(state.formData)
+  ElMessage({
+    message: msg,
+    type: 'success'
+  })
+  state.showDialog = false
+  resetFormData()
+  getTableData()
+}
+
+const handleEdit = async (borrowId) => {
+  const { msg } = await renewBrrow(borrowId)
+  ElMessage({
+    message: msg,
+    type: 'success'
+  })
+  getTableData()
+}
+
+const handleDelete = async (borrowId) => {
+  const { msg } = await deleteBorrow(borrowId)
+  ElMessage({
+    message: msg,
+    type: 'success'
+  })
+  state.page = 1
   getTableData()
 }
 
@@ -81,5 +141,9 @@ getTableData()
 </script>
 <template>
   <Table :table-label="state.tableLabel" :table-data="state.tableData" :total="state.total" :page="state.page"
-    :loading="state.loading" @page-change="handlePageChange" :is-borrow="true" />
+    :placeholder="state.placeholder" :loading="state.loading" :id-name="state.idName" @page-change="handlePageChange"
+    @search="handleSearch" @add="handleAddData" @edit="handleEdit" @delete="handleDelete" :is-borrow="true" />
+  <el-dialog v-model="state.showDialog" title="图书详情">
+    <Form :form-data="state.formData" :form-label="state.formLabel" @submit="handleSubmit" />
+  </el-dialog>
 </template>
