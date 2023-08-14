@@ -29,7 +29,7 @@ export const addBorrow = data => {
 // 续借图书
 export const renewBrrow = borrowId => {
 	return api({
-		url: '/borrows/' + bookId,
+		url: '/borrows/' + borrowId,
 		method: 'PUT',
 	})
 }

@@ -62,3 +62,21 @@ export const deleteUser = userId => {
 		method: 'DELETE',
 	})
 }
+
+// 编辑用户信息
+export const updateUserInfo = (userId, data) => {
+	return api({
+		url: '/users/info/' + userId,
+		method: 'PUT',
+		data,
+	})
+}
+
+// 修改密码
+export const updatePassword = (userId, data) => {
+	return api({
+		url: '/users/password/' + userId,
+		method: 'PUT',
+		data,
+	})
+}

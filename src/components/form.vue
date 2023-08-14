@@ -12,7 +12,7 @@ const submit = () => {
   <el-form :model="props.form" label-width="120px">
     <el-form-item v-for="(item, index) in props.formLabel" :key="index" :label="item.label">
       <template v-if="item.isInput">
-        <el-input v-model="props.formData[item.key]" />
+        <el-input v-model="props.formData[item.key]" :disabled="item.isDisabled" :show-password="item.isPassword" />
       </template>
       <template v-if="item.isSelect">
         <el-select v-model="props.formData[item.key]" placeholder="请选择图书类型">

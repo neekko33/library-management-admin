@@ -13,7 +13,8 @@ const props = defineProps({
   loading: Boolean,
   placeholder: String,
   idName: String,
-  isBorrow: Boolean
+  isBorrow: Boolean,
+  isFine: Boolean
 })
 const state = reactive({
   tableHeight: '669',
@@ -41,6 +42,10 @@ const handleEdit = (id) => {
 const handleDelete = (id) => {
   emit('delete', id)
 }
+
+const jumpToFine = (id) => {
+  emit('jump', id)
+}
 // click pagination button.
 </script>
 <template>
@@ -55,7 +60,7 @@ const handleDelete = (id) => {
         </el-input>
       </div>
     </div>
-    <el-button type="primary" size="large" @click="addNewData">＋新增数据</el-button>
+    <el-button v-if="!props.isFine" type="primary" size="large" @click="addNewData">＋新增数据</el-button>
   </div>
   <div class="table">
     <el-table v-loading="props.loading" :data="props.tableData" header-row-class-name="table_header" stripe border
@@ -89,7 +94,8 @@ const handleDelete = (id) => {
       <el-table-column v-if="props.isBorrow" label="操作">
         <template #default="scope">
           <template v-if="!scope.row.ReturnDate">
-            <el-button v-if="scope.row.IsOverdue" size="small" type="danger">查看罚款</el-button>
+            <el-button v-if="scope.row.IsOverdue" size="small" type="danger"
+              @click="jumpToFine(scope.row.BorrowID)">查看罚款</el-button>
             <template v-else>
               <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" title="是否确认续借?"
                 @confirm="handleEdit(scope.row[props.idName])">
@@ -105,6 +111,16 @@ const handleDelete = (id) => {
               </el-popconfirm>
             </template>
           </template>
+        </template>
+      </el-table-column>
+      <el-table-column v-else-if="props.isFine" label="操作">
+        <template #default="scope">
+          <el-popconfirm v-if="!scope.row.IsPaid" confirm-button-text="确定" cancel-button-text="取消" title="是否确认支付?"
+            @confirm="handleDelete(scope.row[props.idName])">
+            <template #reference>
+              <el-button size="small" type="danger">支付罚款</el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
       <el-table-column v-else label="操作">

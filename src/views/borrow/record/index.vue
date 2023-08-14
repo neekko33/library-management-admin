@@ -4,7 +4,9 @@ import { reactive } from 'vue'
 import Table from '../../../components/table.vue'
 import Form from "../../../components/form.vue"
 import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const state = reactive({
   tableLabel: [
     {
@@ -136,13 +138,18 @@ const handleDelete = async (borrowId) => {
   getTableData()
 }
 
+const handleJump = borrowId => {
+  router.push('/checkout/compensation?bId=' + borrowId)
+}
+
 getTableData()
 
 </script>
 <template>
   <Table :table-label="state.tableLabel" :table-data="state.tableData" :total="state.total" :page="state.page"
     :placeholder="state.placeholder" :loading="state.loading" :id-name="state.idName" @page-change="handlePageChange"
-    @search="handleSearch" @add="handleAddData" @edit="handleEdit" @delete="handleDelete" :is-borrow="true" />
+    @search="handleSearch" @add="handleAddData" @edit="handleEdit" @delete="handleDelete" @jump="handleJump"
+    :is-borrow="true" />
   <el-dialog v-model="state.showDialog" title="图书详情">
     <Form :form-data="state.formData" :form-label="state.formLabel" @submit="handleSubmit" />
   </el-dialog>

@@ -1,8 +1,10 @@
 <script setup>
-import { getFineData } from '../../../api'
+import { getFineData, getFineDataByBorrowId, payFine } from '../../../api/fines'
 import { reactive } from 'vue'
 import Table from '../../../components/table.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const state = reactive({
   tableLabel: [
     {
@@ -26,15 +28,25 @@ const state = reactive({
   tableData: null,
   total: 0,
   page: 1,
-  loading: true
+  loading: true,
+  idName: 'FineID',
+  borrowId: 0
 })
+
+const { bId } = router.currentRoute.value.query
+if (bId) state.borrowId = parseInt(bId)
 
 const getTableData = async () => {
   state.loading = true
-  const { total, page, data } = await getFineData({ page: state.page })
-  state.total = total
-  state.page = page
-  state.tableData = data
+  let fines
+  if (state.borrowId) {
+    fines = await getFineDataByBorrowId(state.borrowId, { page: state.page })
+  } else {
+    fines = await getFineData({ page: state.page })
+  }
+  state.total = fines.total
+  state.page = fines.page
+  state.tableData = fines.data
   state.loading = false
 }
 
@@ -43,10 +55,21 @@ const handlePageChange = (page) => {
   getTableData()
 }
 
+const handleDelete = async (fineId) => {
+  const { msg } = await payFine(fineId)
+  ElMessage({
+    message: msg,
+    type: 'success'
+  })
+  state.page = 1
+  getTableData()
+}
+
 getTableData()
 
 </script>
 <template>
   <Table :table-label="state.tableLabel" :table-data="state.tableData" :total="state.total" :page="state.page"
-    :loading="state.loading" @page-change="handlePageChange" />
+    :loading="state.loading" :id-name="state.idName" @page-change="handlePageChange" @delete="handleDelete"
+    :is-fine="true" />
 </template>
